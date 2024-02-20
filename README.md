@@ -14,142 +14,243 @@ Le Framework doit permettre à un programmeur de faire l'injection des dépendan
     c- Attribut (accès direct à l'attribut : Field)
 </p>
 
-<h2>version XML</h2>
+[//]: # (<h2>version XML</h2>)
 
-<h3>Le fichier dependencies.xml : </h3>
-<p>
+[//]: # ()
+[//]: # (<h3>Le fichier dependencies.xml : </h3>)
 
-  <?xml version="1.0" encoding="UTF-8"?>
-  <injections>
-      <injection id="dao" className="dao.IDaoImpl" />
-      <injection id="metier" className="metier.IMetierImpl">
-          <property name="dao" ref="dao" />
-      </injection>
-  </injections>
+[//]: # (<p>)
 
-</p>
+[//]: # ()
+[//]: # (  <?xml version="1.0" encoding="UTF-8"?>)
 
-<h3>Injections class : </h3>
-<p>
+[//]: # (  <injections>)
 
-  package xmlVersion;
-  import javax.xml.bind.annotation.XmlElement;
-  import javax.xml.bind.annotation.XmlRootElement;
-  import java.util.List;
-  
-  @XmlRootElement(name = "injections")
-  public class Injections {
-      @XmlElement(name = "injection")
-      List<Injection> injections;
-  }
-  
-</p>
+[//]: # (      <injection id="dao" className="dao.IDaoImpl" />)
 
-<h3>Injection class : </h3>
-<p>
+[//]: # (      <injection id="metier" className="metier.IMetierImpl">)
 
-  package xmlVersion;
-  
-  import javax.xml.bind.annotation.XmlAttribute;
-  import javax.xml.bind.annotation.XmlElement;
-  import java.util.List;
-  
-  public class Injection {
-      @XmlAttribute
-      String id;
-  
-      @XmlAttribute(name = "className")
-      String className;
-  
-      @XmlElement(name = "property")
-      List<Property> properties;
-  }
+[//]: # (          <property name="dao" ref="dao" />)
 
-</p>
+[//]: # (      </injection>)
 
-<h3>Property class : </h3>
-<p>
+[//]: # (  </injections>)
 
-  package xmlVersion;
-  
-  import javax.xml.bind.annotation.XmlAttribute;
-  
-  public class Property {
-      @XmlAttribute
-      String name;
-  
-      @XmlAttribute
-      String ref;
-  }
-  
-</p>
+[//]: # ()
+[//]: # (</p>)
 
-<h3>DependencyInjector class : </h3>
-<p>
+[//]: # ()
+[//]: # (<h3>Injections class : </h3>)
 
-  package xmlVersion;
-  
-  import javax.xml.bind.JAXBContext;
-  import javax.xml.bind.Unmarshaller;
-  import java.io.InputStream;
-  import java.lang.reflect.Method;
-  import java.util.HashMap;
-  import java.util.Map;
-  
-  public class DependencyInjector {
-      private Map<String, Object> instances = new HashMap<>();
-  
-      public DependencyInjector(String xmlFile) throws Exception {
-          // Lire le fichier XML
-          JAXBContext jaxbContext = JAXBContext.newInstance(Injections.class);
-          Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-          InputStream xmlStream = this.getClass().getClassLoader().getResourceAsStream(xmlFile);
-          Injections injections = (Injections) unmarshaller.unmarshal(xmlStream);
-  
-          // Créer des instances et les stocker dans le map
-          for (Injection injection : injections.injections) {
-              Class<?> clazz = Class.forName(injection.className);
-              Object instance = clazz.getDeclaredConstructor().newInstance();
-              instances.put(injection.id, instance);
-          }
-  
-          // Injecter les dépendances
-          for (Injection injection : injections.injections) {
-              if (injection.properties != null) {
-                  for (Property property : injection.properties) {
-                      Object instance = instances.get(injection.id);
-                      Object dependency = instances.get(property.ref);
-                      Method setter = instance.getClass().getMethod("set" + property.name.substring(0, 1).toUpperCase() + property.name.substring(1), dependency.getClass().getInterfaces([0]);
-                      setter.invoke(instance, dependency);
-                  }
-              }
-          }
-      }
-  
-      public Object getBean(String id) {
-          return instances.get(id);
-      }
-  }
-  
-</p>
+[//]: # (<p>)
 
-<h3> Main : </h3>
-<p>
+[//]: # ()
+[//]: # (  package xmlVersion;)
 
-  package presentation;
-  
-  import metier.IMetier;
-  import xmlVersion.DependencyInjector;
-  
-  public class PresentationXMLVersion {
-      public static void main(String[] args) throws Exception {
-          DependencyInjector context = new DependencyInjector("dependencies.xml");
-          IMetier metier = (IMetier) context.getBean("metier");
-          System.out.println(metier.calcul());
-      }
-  }
+[//]: # (  import javax.xml.bind.annotation.XmlElement;)
 
-</p>
+[//]: # (  import javax.xml.bind.annotation.XmlRootElement;)
+
+[//]: # (  import java.util.List;)
+
+[//]: # (  )
+[//]: # (  @XmlRootElement&#40;name = "injections"&#41;)
+
+[//]: # (  public class Injections {)
+
+[//]: # (      @XmlElement&#40;name = "injection"&#41;)
+
+[//]: # (      List<Injection> injections;)
+
+[//]: # (  })
+
+[//]: # (  )
+[//]: # (</p>)
+
+[//]: # ()
+[//]: # (<h3>Injection class : </h3>)
+
+[//]: # (<p>)
+
+[//]: # ()
+[//]: # (  package xmlVersion;)
+
+[//]: # (  )
+[//]: # (  import javax.xml.bind.annotation.XmlAttribute;)
+
+[//]: # (  import javax.xml.bind.annotation.XmlElement;)
+
+[//]: # (  import java.util.List;)
+
+[//]: # (  )
+[//]: # (  public class Injection {)
+
+[//]: # (      @XmlAttribute)
+
+[//]: # (      String id;)
+
+[//]: # (  )
+[//]: # (      @XmlAttribute&#40;name = "className"&#41;)
+
+[//]: # (      String className;)
+
+[//]: # (  )
+[//]: # (      @XmlElement&#40;name = "property"&#41;)
+
+[//]: # (      List<Property> properties;)
+
+[//]: # (  })
+
+[//]: # ()
+[//]: # (</p>)
+
+[//]: # ()
+[//]: # (<h3>Property class : </h3>)
+
+[//]: # (<p>)
+
+[//]: # ()
+[//]: # (  package xmlVersion;)
+
+[//]: # (  )
+[//]: # (  import javax.xml.bind.annotation.XmlAttribute;)
+
+[//]: # (  )
+[//]: # (  public class Property {)
+
+[//]: # (      @XmlAttribute)
+
+[//]: # (      String name;)
+
+[//]: # (  )
+[//]: # (      @XmlAttribute)
+
+[//]: # (      String ref;)
+
+[//]: # (  })
+
+[//]: # (  )
+[//]: # (</p>)
+
+[//]: # ()
+[//]: # (<h3>DependencyInjector class : </h3>)
+
+[//]: # (<p>)
+
+[//]: # ()
+[//]: # (  package xmlVersion;)
+
+[//]: # (  )
+[//]: # (  import javax.xml.bind.JAXBContext;)
+
+[//]: # (  import javax.xml.bind.Unmarshaller;)
+
+[//]: # (  import java.io.InputStream;)
+
+[//]: # (  import java.lang.reflect.Method;)
+
+[//]: # (  import java.util.HashMap;)
+
+[//]: # (  import java.util.Map;)
+
+[//]: # (  )
+[//]: # (  public class DependencyInjector {)
+
+[//]: # (      private Map<String, Object> instances = new HashMap<>&#40;&#41;;)
+
+[//]: # (  )
+[//]: # (      public DependencyInjector&#40;String xmlFile&#41; throws Exception {)
+
+[//]: # (          // Lire le fichier XML)
+
+[//]: # (          JAXBContext jaxbContext = JAXBContext.newInstance&#40;Injections.class&#41;;)
+
+[//]: # (          Unmarshaller unmarshaller = jaxbContext.createUnmarshaller&#40;&#41;;)
+
+[//]: # (          InputStream xmlStream = this.getClass&#40;&#41;.getClassLoader&#40;&#41;.getResourceAsStream&#40;xmlFile&#41;;)
+
+[//]: # (          Injections injections = &#40;Injections&#41; unmarshaller.unmarshal&#40;xmlStream&#41;;)
+
+[//]: # (  )
+[//]: # (          // Créer des instances et les stocker dans le map)
+
+[//]: # (          for &#40;Injection injection : injections.injections&#41; {)
+
+[//]: # (              Class<?> clazz = Class.forName&#40;injection.className&#41;;)
+
+[//]: # (              Object instance = clazz.getDeclaredConstructor&#40;&#41;.newInstance&#40;&#41;;)
+
+[//]: # (              instances.put&#40;injection.id, instance&#41;;)
+
+[//]: # (          })
+
+[//]: # (  )
+[//]: # (          // Injecter les dépendances)
+
+[//]: # (          for &#40;Injection injection : injections.injections&#41; {)
+
+[//]: # (              if &#40;injection.properties != null&#41; {)
+
+[//]: # (                  for &#40;Property property : injection.properties&#41; {)
+
+[//]: # (                      Object instance = instances.get&#40;injection.id&#41;;)
+
+[//]: # (                      Object dependency = instances.get&#40;property.ref&#41;;)
+
+[//]: # (                      Method setter = instance.getClass&#40;&#41;.getMethod&#40;"set" + property.name.substring&#40;0, 1&#41;.toUpperCase&#40;&#41; + property.name.substring&#40;1&#41;, dependency.getClass&#40;&#41;.getInterfaces&#40;[0]&#41;;)
+
+[//]: # (                      setter.invoke&#40;instance, dependency&#41;;)
+
+[//]: # (                  })
+
+[//]: # (              })
+
+[//]: # (          })
+
+[//]: # (      })
+
+[//]: # (  )
+[//]: # (      public Object getBean&#40;String id&#41; {)
+
+[//]: # (          return instances.get&#40;id&#41;;)
+
+[//]: # (      })
+
+[//]: # (  })
+
+[//]: # (  )
+[//]: # (</p>)
+
+[//]: # ()
+[//]: # (<h3> Main : </h3>)
+
+[//]: # (<p>)
+
+[//]: # ()
+[//]: # (  package presentation;)
+
+[//]: # (  )
+[//]: # (  import metier.IMetier;)
+
+[//]: # (  import xmlVersion.DependencyInjector;)
+
+[//]: # (  )
+[//]: # (  public class PresentationXMLVersion {)
+
+[//]: # (      public static void main&#40;String[] args&#41; throws Exception {)
+
+[//]: # (          DependencyInjector context = new DependencyInjector&#40;"dependencies.xml"&#41;;)
+
+[//]: # (          IMetier metier = &#40;IMetier&#41; context.getBean&#40;"metier"&#41;;)
+
+[//]: # (          System.out.println&#40;metier.calcul&#40;&#41;&#41;;)
+
+[//]: # (      })
+
+[//]: # (  })
+
+[//]: # ()
+[//]: # (</p>)
 
 
   
