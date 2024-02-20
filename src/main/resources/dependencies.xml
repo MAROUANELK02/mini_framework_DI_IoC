@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<injections>
+    <injection id="dao" className="ext.IDaoImpl2" />
+    <injection id="metier" className="metier.IMetierImpl">
+        <property name="dao" ref="dao" />
+    </injection>
+</injections>
