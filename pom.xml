@@ -15,6 +15,11 @@
             <artifactId>core</artifactId>
             <version>12.64.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.12</version>
+        </dependency>
 
     </dependencies>
 

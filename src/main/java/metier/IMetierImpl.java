@@ -1,8 +1,14 @@
 package metier;
 
 import dao.IDao;
+import framework.Autowired;
+import framework.Component;
+import framework.Qualifier;
 
+@Component("metier")
 public class IMetierImpl implements IMetier {
+    @Autowired
+    @Qualifier("dao2")
     private IDao dao;
 
     @Override
