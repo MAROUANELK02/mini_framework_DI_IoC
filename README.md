@@ -33,7 +33,6 @@ Le Framework doit permettre à un programmeur de faire l'injection des dépendan
 <p>
 
   package xmlVersion;
-  
   import javax.xml.bind.annotation.XmlElement;
   import javax.xml.bind.annotation.XmlRootElement;
   import java.util.List;
