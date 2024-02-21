@@ -9,4 +9,3 @@ public class Injections {
     @XmlElement(name = "injection")
     List<Injection> injections;
 }
-

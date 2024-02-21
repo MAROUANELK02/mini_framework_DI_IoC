@@ -14,4 +14,3 @@ public class Injection {
     @XmlElement(name = "property")
     List<Property> properties;
 }
-
