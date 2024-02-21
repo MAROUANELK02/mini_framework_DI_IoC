@@ -1,4 +1,4 @@
-<h1>Mini Projet : Framework Injection des dépendance </h1>
+<h1>Mini Projet : Framework Injection des dépendances </h1>
 
 <h2>Enoncé :</h2>
 
